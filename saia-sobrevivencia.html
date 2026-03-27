@@ -933,7 +933,7 @@
     .pricing-card::after  { bottom: 18px; right: 18px; }
 
     .pricing-title {
-      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-size: clamp(1.2rem, 1.6vw, 1.4rem);
       color: var(--c-ivory);
       margin-bottom: 48px;
       line-height: 1.4;
@@ -1042,7 +1042,7 @@
       border: none;
       color: var(--c-offwhite);
       font-family: 'Cinzel', serif;
-      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      font-size: clamp(1rem, 1.8vw, 1.05rem);
       text-align: left;
       padding: 28px 0;
       cursor: pointer;
@@ -1158,20 +1158,56 @@
     /* ═══════════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════════ */
-    @media (max-width: 640px) {
-      .about-grid {
-        grid-template-columns: 1fr;
+    /* ── Tablet + Mobile (≤ 768px) ── */
+    @media (max-width: 768px) {
+      /* Padding geral reduzido */
+      .section-pad { padding: 72px 20px; }
+
+      /* Hero */
+      .hero { padding: 48px 20px 60px; }
+      .btn-hero { padding: 16px 36px; }
+
+      /* Confront — já tem media query própria */
+
+      /* Pain */
+      .verdict { padding: 32px 24px; }
+      .pull-quote { padding: 24px 20px; }
+
+      /* Truth */
+      .truth-col {
+        border-right: none;
+        border-bottom: 1px solid rgba(184,131,42,0.15);
+        padding: 28px 0;
       }
+      .truth-col:last-child { border-bottom: none; }
+      .truth-q { padding: 32px 24px; }
 
-
-
-      .pricing-card { padding: 44px 28px; }
-
+      /* Modules */
       .modules-grid { grid-template-columns: 1fr; }
+      .module { padding: 36px 24px; }
 
-      .verdict { padding: 36px 28px; }
+      /* About */
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo { aspect-ratio: 4/3; max-width: 340px; margin: 0 auto; }
 
-      .pull-quote { padding: 24px 24px; }
+      /* Pricing */
+      .pricing-card { padding: 44px 24px; }
+
+      /* Banner CTA */
+      .banner-cta .btn-cta { padding: 16px 36px; }
+
+      /* FAQ */
+      .faq-btn { font-size: 1rem; }
+    }
+
+    /* ── Mobile pequeno (≤ 480px) ── */
+    @media (max-width: 480px) {
+      .section-pad { padding: 56px 16px; }
+      .hero { padding: 40px 16px 52px; }
+      .hero-logo { width: clamp(120px, 40vw, 180px); }
+      .truth-q { padding: 24px 16px; }
+      .verdict { padding: 24px 16px; }
+      .pricing-card { padding: 36px 16px; }
     }
   </style>
 </head>
