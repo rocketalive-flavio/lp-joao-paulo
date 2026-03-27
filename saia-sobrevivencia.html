@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saia do Modo de Sobrevivência — Plano de Transição de Vida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --c-black:      #0E1215;
+      --c-deep:       #141C22;
+      --c-navy:       #1B3A52;
+      --c-brown:      #3D2E1E;
+      --c-steel:      #ffffff;
+      --c-offwhite:   #DDE8ED;
+      --c-ivory:      #F2EDE4;
+      --c-bronze:     #B8832A;
+      --c-bronze-lt:  #D4A84B;
+      --c-dim:        #ffffff;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--c-black);
+      color: var(--c-offwhite);
+      font-family: 'Oswald', sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain overlay ─────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── Typography ────────────────────── */
+    h1, h2, h3, h4 { font-family: 'Cinzel', serif; line-height: 1.2; }
+
+    strong { font-weight: 600; color: var(--c-ivory); }
+
+    /* ── Utility ───────────────────────── */
+    .label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--c-bronze);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .label::before, .label::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--c-bronze);
+      opacity: 0.5;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 28px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 28px 80px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(27,58,82,0.55) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 10% 100%, rgba(61,46,30,0.4) 0%, transparent 60%),
+        var(--c-black);
+    }
+
+    /* Decorative compass rings */
+    .hero-rings {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-rings span {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(184,131,42,0.07);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .hero-rings span:nth-child(1) { width: 420px; height: 420px; }
+    .hero-rings span:nth-child(2) { width: 700px; height: 700px; border-color: rgba(184,131,42,0.04); }
+    .hero-rings span:nth-child(3) { width: 1000px; height: 1000px; border-color: rgba(184,131,42,0.025); }
+    .hero-rings span:nth-child(4) { width: 1400px; height: 1400px; border-color: rgba(184,131,42,0.015); }
+
+    /* Cross hairs */
+    .hero-crosshair {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      width: 1000px;
+      height: 1000px;
+    }
+    .hero-crosshair::before,
+    .hero-crosshair::after {
+      content: '';
+      position: absolute;
+      background: rgba(184,131,42,0.06);
+    }
+    .hero-crosshair::before {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+    }
+    .hero-crosshair::after {
+      height: 1px;
+      width: 100%;
+      top: 50%;
+    }
+
+    .hero-logo {
+      width: clamp(120px, 13vw, 180px);
+      height: auto;
+      margin-bottom: 36px;
+      filter: drop-shadow(0 12px 40px rgba(184,131,42,0.25));
+      animation: float 7s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--c-bronze);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: riseIn 0.9s ease 0.4s forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.4rem, 2.3vw, 2.1rem);
+      font-weight: 700;
+      color: var(--c-ivory);
+      max-width: 860px;
+      margin-bottom: 28px;
+      text-wrap: balance;
+      opacity: 0;
+      animation: riseIn 0.9s ease 0.6s forwards;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--c-bronze-lt);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--c-steel);
+      max-width: 580px;
+      font-style: normal;
+      margin-bottom: 52px;
+      opacity: 0;
+      animation: riseIn 0.9s ease 0.8s forwards;
+    }
+
+    .btn-hero {
+      display: inline-block;
+      padding: 18px 56px;
+      background: linear-gradient(135deg, var(--c-bronze), var(--c-bronze-lt));
+      color: var(--c-black);
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(184,131,42,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+      opacity: 0;
+      animation: riseIn 0.9s ease 1s forwards;
+    }
+
+    .btn-hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      transition: left 0.55s;
+    }
+
+    .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 12px 50px rgba(184,131,42,0.65); }
+    .btn-hero:hover::after { left: 100%; }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 0;
+      right: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: riseIn 1s ease 1.4s forwards;
+    }
+
+    .hero-scroll span {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--c-dim);
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 56px;
+      background: linear-gradient(to bottom, var(--c-bronze), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1; transform: scaleY(1.15); }
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       SECTION WRAPPER
+    ═══════════════════════════════════════════════ */
+    section { position: relative; }
+
+    .section-pad { padding: 80px 28px; }
+
+    /* ═══════════════════════════════════════════════
+       CONFRONTATION
+    ═══════════════════════════════════════════════ */
+    .s-confront {
+      background:
+        radial-gradient(ellipse 70% 60% at 100% 50%, rgba(61,46,30,0.28) 0%, transparent 65%),
+        var(--c-deep);
+      border-top: 1px solid rgba(184,131,42,0.1);
+      border-bottom: 1px solid rgba(184,131,42,0.08);
+    }
+
+    .s-confront .inner { max-width: 760px; margin: 0 auto; text-align: center; }
+
+    .s-confront h2 {
+      font-size: clamp(1.3rem, 2vw, 1.9rem);
+      color: var(--c-ivory);
+      margin: 20px 0 40px;
+    }
+
+    .s-confront p {
+      color: #ffffff;
+      margin-bottom: 22px;
+      font-size: 1rem;
+    }
+
+    .pull-quote {
+      margin-top: 52px;
+      padding: 32px 36px;
+      border-left: 3px solid var(--c-bronze);
+      background: rgba(184,131,42,0.05);
+    }
+
+    .pull-quote p {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.98rem, 1.5vw, 1.2rem);
+      color: var(--c-ivory);
+      font-style: normal;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       PAIN POINTS
+    ═══════════════════════════════════════════════ */
+    .s-pain {
+      background: var(--c-black);
+    }
+
+    .s-pain h2 {
+      font-size: clamp(1.2rem, 1.9vw, 1.8rem);
+      color: var(--c-ivory);
+      margin: 20px 0 14px;
+      text-align: center;
+    }
+
+    .s-pain .intro {
+      color: var(--c-dim);
+      margin-bottom: 56px;
+      font-size: 1.05rem;
+      text-align: center;
+    }
+
+    .pain-list {
+      list-style: none;
+      border-top: 1px solid rgba(107,138,154,0.12);
+    }
+
+    .pain-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 26px 0;
+      border-bottom: 1px solid rgba(107,138,154,0.1);
+      opacity: 0;
+      transform: translateX(-18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .pain-item.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .pain-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: rgba(184,131,42,0.22);
+      line-height: 1;
+      min-width: 36px;
+      margin-top: 4px;
+    }
+
+    .pain-text {
+      color: #ffffff;
+      font-size: 1.08rem;
+      line-height: 1.65;
+    }
+
+    .pain-text strong { font-weight: 600; color: var(--c-offwhite); }
+
+    .verdict {
+      margin-top: 60px;
+      padding: 44px 48px;
+      background: rgba(61,46,30,0.25);
+      border: 1px solid rgba(184,131,42,0.18);
+      text-align: center;
+      position: relative;
+    }
+
+    .verdict::before, .verdict::after {
+      content: '◆';
+      font-size: 0.45rem;
+      color: var(--c-bronze);
+      position: absolute;
+      opacity: 0.7;
+    }
+
+    .verdict::before { top: 14px; left: 14px; }
+    .verdict::after  { bottom: 14px; right: 14px; }
+
+    .verdict p {
+      color: var(--c-steel);
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+    }
+
+    .verdict strong {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+      color: var(--c-ivory);
+      display: block;
+      line-height: 1.3;
+    }
+
+    /* ═══════════════════════════════════════════════
+       TRUTH
+    ═══════════════════════════════════════════════ */
+    .s-truth {
+      background:
+        radial-gradient(ellipse 80% 70% at 50% 50%, rgba(27,58,82,0.35) 0%, transparent 70%),
+        var(--c-brown);
+      border-top: 1px solid rgba(184,131,42,0.12);
+      border-bottom: 1px solid rgba(184,131,42,0.12);
+    }
+
+    .s-truth .inner { max-width: 760px; margin: 0 auto; text-align: center; }
+
+    .s-truth h2 {
+      font-size: clamp(1.2rem, 2vw, 1.85rem);
+      color: var(--c-ivory);
+      margin: 20px 0 36px;
+    }
+
+    .s-truth p {
+      color: #B0978A;
+      margin-bottom: 26px;
+      font-size: 1.08rem;
+    }
+
+    .truth-q {
+      margin-top: 48px;
+      padding: 36px 40px;
+      border-top: 1px solid rgba(184,131,42,0.25);
+      border-bottom: 1px solid rgba(184,131,42,0.25);
+    }
+
+    .truth-q p {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      color: var(--c-ivory);
+      font-style: normal;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SOLUTION
+    ═══════════════════════════════════════════════ */
+    .s-solution {
+      background: var(--c-deep);
+      padding-bottom: 40px;
+    }
+
+    .s-solution .inner { max-width: 820px; margin: 0 auto; text-align: center; }
+
+    .s-solution h2 {
+      font-size: clamp(1.3rem, 2.2vw, 2rem);
+      color: var(--c-ivory);
+      margin: 20px 0 36px;
+      line-height: 1.2;
+    }
+
+    .s-solution h2 em {
+      display: block;
+      font-style: normal;
+      color: var(--c-bronze-lt);
+    }
+
+    .s-solution p {
+      color: #ffffff;
+      font-size: 1rem;
+      max-width: 680px;
+      margin: 0 auto 20px;
+      line-height: 1.75;
+    }
+
+    /* ═══════════════════════════════════════════════
+       MODULES
+    ═══════════════════════════════════════════════ */
+    .s-modules {
+      background: var(--c-black);
+      padding-top: 0;
+    }
+
+    .modules-header {
+      text-align: center;
+      padding: 64px 28px 48px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .modules-header h2 {
+      font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+      color: var(--c-ivory);
+      margin-top: 14px;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1px;
+      max-width: 1120px;
+      margin: 0 auto;
+      background: rgba(107,138,154,0.1);
+    }
+
+    .module {
+      background: var(--c-black);
+      padding: 52px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s;
+    }
+
+    .module::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 3px; height: 0;
+      background: linear-gradient(to bottom, var(--c-bronze), transparent);
+      transition: height 0.45s ease;
+    }
+
+    .module:hover { background: rgba(27,58,82,0.18); }
+    .module:hover::before { height: 100%; }
+
+    .mod-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: rgba(184,131,42,0.12);
+      line-height: 1;
+      margin-bottom: 22px;
+    }
+
+    .mod-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--c-offwhite);
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+
+    .mod-desc {
+      color: #ffffff;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════════
+       BONUS
+    ═══════════════════════════════════════════════ */
+    .s-bonus {
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(184,131,42,0.1) 0%, transparent 65%),
+        rgba(27,58,82,0.18);
+      border-top: 1px solid rgba(184,131,42,0.14);
+      border-bottom: 1px solid rgba(184,131,42,0.14);
+    }
+
+    .s-bonus .inner { max-width: 820px; margin: 0 auto; text-align: center; }
+
+    .bonus-badge {
+      display: inline-block;
+      padding: 5px 20px;
+      background: linear-gradient(135deg, var(--c-bronze), var(--c-bronze-lt));
+      color: var(--c-black);
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .s-bonus h2 {
+      font-size: clamp(1.3rem, 1.9vw, 2rem);
+      color: var(--c-ivory);
+      margin-bottom: 24px;
+    }
+
+    .s-bonus p {
+      color: #ffffff;
+      margin-bottom: 20px;
+      font-size: 1.08rem;
+    }
+
+    .bonus-q {
+      padding: 36px 0;
+      border-top: 1px solid rgba(184,131,42,0.2);
+      border-bottom: 1px solid rgba(184,131,42,0.2);
+      margin: 36px 0;
+    }
+
+    .bonus-q p {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.98rem, 1.5vw, 1.25rem);
+      color: var(--c-ivory);
+      font-style: normal;
+      margin: 0;
+    }
+
+    .bonus-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .bonus-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      color: #ffffff;
+      font-size: 1.08rem;
+      text-align: left;
+    }
+
+    .bonus-list li::before {
+      content: '→';
+      color: var(--c-bronze);
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════════ */
+    .s-about {
+      background: var(--c-black);
+    }
+
+    .about-grid {
+      max-width: 1060px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, var(--c-brown) 0%, var(--c-navy) 100%);
+      border: 1px solid rgba(184,131,42,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .about-photo::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(184,131,42,0.15);
+      pointer-events: none;
+    }
+
+    .about-photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      opacity: 0.35;
+    }
+
+    .about-photo-placeholder svg {
+      width: 56px;
+      height: 56px;
+      fill: none;
+      stroke: var(--c-bronze);
+      stroke-width: 1;
+    }
+
+    .about-photo-placeholder span {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-bronze);
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-photo {
+        aspect-ratio: 4/3;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+    }
+
+    .about-role {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-bronze);
+      margin: 8px 0 32px;
+    }
+
+    .about-content h2 {
+      font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+      color: var(--c-ivory);
+    }
+
+    .about-content p {
+      color: #ffffff;
+      margin-bottom: 20px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════════════
+       PRICING
+    ═══════════════════════════════════════════════ */
+    .s-pricing {
+      background:
+        radial-gradient(ellipse 80% 70% at 50% 50%, rgba(27,58,82,0.45) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 0% 0%, rgba(61,46,30,0.3) 0%, transparent 55%),
+        var(--c-black);
+      text-align: center;
+    }
+
+    .pricing-card {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 64px 52px;
+      background: rgba(27,58,82,0.14);
+      border: 1px solid rgba(184,131,42,0.2);
+      position: relative;
+    }
+
+    .pricing-card::before,
+    .pricing-card::after {
+      content: '◆';
+      position: absolute;
+      font-size: 0.45rem;
+      color: var(--c-bronze);
+      opacity: 0.7;
+    }
+
+    .pricing-card::before { top: 18px; left: 18px; }
+    .pricing-card::after  { bottom: 18px; right: 18px; }
+
+    .pricing-title {
+      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      color: var(--c-ivory);
+      margin-bottom: 48px;
+      line-height: 1.4;
+    }
+
+    .price-was {
+      font-family: 'Oswald', sans-serif;
+      color: var(--c-dim);
+      font-size: 1.05rem;
+      letter-spacing: 0.1em;
+      text-decoration: line-through;
+    }
+
+    .price-tag-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--c-bronze);
+      margin: 10px 0;
+    }
+
+    .price-now {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(3rem, 5vw, 4.2rem);
+      font-weight: 900;
+      color: var(--c-ivory);
+      line-height: 1;
+      margin: 14px 0;
+    }
+
+    .price-now sup {
+      font-size: 0.38em;
+      vertical-align: super;
+      color: var(--c-bronze-lt);
+    }
+
+    .price-desc {
+      color: var(--c-steel);
+      font-size: 1rem;
+      margin: 36px 0 44px;
+      line-height: 1.65;
+    }
+
+    .btn-cta {
+      display: block;
+      width: 100%;
+      padding: 22px;
+      background: linear-gradient(135deg, var(--c-bronze), var(--c-bronze-lt));
+      color: var(--c-black);
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 36px rgba(184,131,42,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cta::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.55s;
+    }
+
+    .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 14px 56px rgba(184,131,42,0.7); }
+    .btn-cta:hover::after { left: 100%; }
+
+    .price-note {
+      margin-top: 22px;
+      color: #ffffff;
+      font-size: 0.88rem;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FAQ
+    ═══════════════════════════════════════════════ */
+    .s-faq {
+      background: rgba(27,58,82,0.07);
+      border-top: 1px solid rgba(107,138,154,0.1);
+    }
+
+    .s-faq .inner { max-width: 780px; margin: 0 auto; }
+
+    .s-faq h2 {
+      font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+      color: var(--c-ivory);
+      text-align: center;
+      margin: 20px 0 48px;
+    }
+
+    .faq-item { border-bottom: 1px solid rgba(107,138,154,0.13); }
+
+    .faq-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--c-offwhite);
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      text-align: left;
+      padding: 28px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      transition: color 0.2s;
+    }
+
+    .faq-btn:hover { color: var(--c-bronze-lt); }
+
+    .faq-icon {
+      font-size: 1.4rem;
+      color: var(--c-bronze);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+      line-height: 1;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.42s ease, padding 0.3s;
+    }
+
+    .faq-item.open .faq-body {
+      max-height: 300px;
+      padding-bottom: 28px;
+    }
+
+    .faq-body p {
+      color: var(--c-dim);
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER CTA BANNER
+    ═══════════════════════════════════════════════ */
+    .banner-cta {
+      padding: 80px 28px;
+      background:
+        radial-gradient(ellipse 80% 100% at 50% 0%, rgba(184,131,42,0.1) 0%, transparent 70%),
+        var(--c-deep);
+      text-align: center;
+      border-top: 1px solid rgba(184,131,42,0.15);
+    }
+
+    .banner-cta h2 {
+      font-size: clamp(1.2rem, 1.9vw, 1.9rem);
+      color: var(--c-ivory);
+      max-width: 700px;
+      margin: 20px auto 32px;
+    }
+
+    .banner-cta .btn-cta {
+      display: inline-block;
+      width: auto;
+      padding: 20px 64px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    footer {
+      padding: 48px 28px;
+      background: var(--c-black);
+      border-top: 1px solid rgba(107,138,154,0.08);
+      text-align: center;
+    }
+
+    footer img {
+      width: 140px;
+      height: auto;
+      opacity: 1;
+      margin-bottom: 20px;
+    }
+
+    footer p {
+      color: #ffffff;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* ═══════════════════════════════════════════════
+       DECORATIVE DIVIDER
+    ═══════════════════════════════════════════════ */
+    .sep {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 460px;
+      margin: 0 auto;
+      opacity: 0.25;
+    }
+
+    .sep::before, .sep::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--c-bronze);
+    }
+
+    .sep span {
+      font-size: 0.5rem;
+      color: var(--c-bronze);
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+
+      .pricing-card { padding: 44px 28px; }
+
+      .modules-grid { grid-template-columns: 1fr; }
+
+      .verdict { padding: 36px 28px; }
+
+      .pull-quote { padding: 24px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-rings">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-crosshair"></div>
+
+  <img
+    src="Saia do Modo de Sobrevivência/Logo Saia do Modo de Sobrevivência Sem Fundo.png"
+    alt="Saia do Modo de Sobrevivência"
+    class="hero-logo"
+  >
+
+  <div class="hero-eyebrow">Plano de Transição de Vida</div>
+
+  <h1>
+    Tudo o que você precisa para organizar sua vida e construir uma vida com mais <em>propósito, tempo e presença com a sua família</em>
+  </h1>
+
+  <p class="hero-sub">
+    Um caminho prático para sair do piloto automático e começar a viver de verdade.
+  </p>
+
+  <a href="#acesso" class="btn-hero">Quero sair do modo sobrevivência</a>
+
+  <div class="hero-scroll">
+    <span>Continue</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════
+     CONFRONTATION
+══════════════════════════════════════════ -->
+<section class="s-confront section-pad">
+  <div class="inner">
+    <div class="label reveal" style="justify-content: center;">Seja honesto</div>
+    <h2 class="reveal">Seja sincero com você mesmo por um momento.</h2>
+
+    <p class="reveal">
+      Você trabalha muito, resolve problemas o tempo inteiro e corre atrás de resultados. Mas, no fundo, sente que está apenas mantendo a vida funcionando. A semana passa rápido, o cansaço acumula e o tempo com quem realmente importa fica cada vez menor.
+    </p>
+
+    <p class="reveal">
+      Muitas pessoas vivem assim durante décadas, trabalhando, pagando contas e esperando o dia em que finalmente poderão viver. Muitas vezes esse dia recebe um nome: <strong>aposentadoria</strong>.
+    </p>
+
+    <div class="pull-quote reveal">
+      <p>Mas existe uma pergunta importante que quase ninguém faz: será que a vida precisa ser vivida só depois que o trabalho termina?</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PAIN POINTS
+══════════════════════════════════════════ -->
+<section class="s-pain section-pad">
+  <div class="container">
+    <div class="label reveal" style="justify-content: center;">Diagnóstico</div>
+    <h2 class="reveal">Sinais de que você está vivendo<br>no modo sobrevivência</h2>
+    <p class="intro reveal">Muitas pessoas passam anos vivendo nesse ritmo sem perceber.<br>Veja se alguns desses sinais fazem parte da sua realidade:</p>
+
+    <ul class="pain-list">
+      <li class="pain-item">
+        <span class="pain-num">01</span>
+        <span class="pain-text">Você trabalha muito, mas sente que está apenas <strong>pagando contas e mantendo o padrão de vida.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">02</span>
+        <span class="pain-text">A semana passa rápido demais e <strong>quase não sobra tempo de qualidade com sua família.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">03</span>
+        <span class="pain-text">Seus filhos estão crescendo e <strong>você sente que está perdendo momentos importantes.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">04</span>
+        <span class="pain-text">Você chega em casa cansado, com <strong>pouca energia para conversar, brincar ou simplesmente estar presente.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">05</span>
+        <span class="pain-text">O casamento começa a virar apenas <strong>uma rotina de responsabilidades e preocupações.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">06</span>
+        <span class="pain-text">A maior parte do seu tempo é dedicada ao <strong>trabalho que não realiza e à manutenção da vida atual.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">07</span>
+        <span class="pain-text">Você já pensou várias vezes em mudar de vida, mas <strong>nunca teve clareza por onde começar.</strong></span>
+      </li>
+      <li class="pain-item">
+        <span class="pain-num">08</span>
+        <span class="pain-text">A ideia de viver com mais tranquilidade parece sempre <strong>algo distante, talvez só quando chegar a aposentadoria.</strong></span>
+      </li>
+    </ul>
+
+    <div class="verdict reveal">
+      <p>Se você se identificou com alguns desses pontos, existe algo importante acontecendo.</p>
+      <strong>Você está vivendo no modo sobrevivência.</strong>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     TRUTH
+══════════════════════════════════════════ -->
+<section class="s-truth section-pad">
+  <div class="inner">
+    <div class="label" style="justify-content: center;">A verdade que quase ninguém fala</div>
+    <h2 class="reveal">O modo sobrevivência mantém você ocupado,<br>mas não necessariamente construindo a vida<br>que gostaria de viver.</h2>
+
+    <p class="reveal">A rotina passa a girar em torno de trabalho, contas e compromissos, sempre seguidos de mais trabalho. Quando você percebe, anos já passaram, os filhos cresceram, os relacionamentos mudaram e o tempo foi embora.</p>
+
+    <p class="reveal">É nesse momento que surge uma pergunta que incomoda muita gente:</p>
+
+    <div class="truth-q reveal">
+      <p>"Será que eu poderia ter vivido de outra forma?"</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     SOLUTION
+══════════════════════════════════════════ -->
+<section class="s-solution section-pad">
+  <div class="inner">
+    <div class="label" style="justify-content: center;">A Solução</div>
+    <h2 class="reveal">
+      Foi dessa experiência que nasceu o
+      <em>Plano de Transição de Vida</em>
+    </h2>
+
+    <p class="reveal">Um passo a passo prático criado para ajudar você a responder duas perguntas importantes: <strong>quanto custa sair do modo sobrevivência</strong> e o que precisa ser organizado antes de qualquer mudança de vida.</p>
+
+    <p class="reveal">Em vez de teorias ou conteúdos complexos, você terá acesso a ferramentas objetivas que ajudam a olhar para sua realidade atual com mais clareza. A ideia é transformar uma sensação confusa de insatisfação em algo mais concreto — mostrando o que precisa ser analisado, organizado e planejado antes de qualquer transição.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     MODULES
+══════════════════════════════════════════ -->
+<section class="s-modules">
+  <div class="modules-header reveal">
+    <div class="label" style="justify-content: center;">O que você vai receber</div>
+    <h2>Cinco aulas práticas para começar sua transição</h2>
+  </div>
+
+  <div class="modules-grid">
+    <div class="module reveal">
+      <div class="mod-num">01</div>
+      <h3 class="mod-title">Como sair do modo sobrevivência</h3>
+      <p class="mod-desc">Entenda os sinais de que sua vida entrou no piloto automático e por que muitas pessoas passam anos apenas mantendo a rotina funcionando.</p>
+    </div>
+    <div class="module reveal">
+      <div class="mod-num">02</div>
+      <h3 class="mod-title">Quanto custa mudar de vida</h3>
+      <p class="mod-desc">Descubra como analisar sua realidade financeira e entender quanto seria necessário para iniciar uma mudança de forma mais segura.</p>
+    </div>
+    <div class="module reveal">
+      <div class="mod-num">03</div>
+      <h3 class="mod-title">15 decisões antes de qualquer mudança</h3>
+      <p class="mod-desc">Conheça os pontos mais importantes que precisam estar organizados antes de qualquer transição de vida.</p>
+    </div>
+    <div class="module reveal">
+      <div class="mod-num">04</div>
+      <h3 class="mod-title">Mapa de Possibilidades</h3>
+      <p class="mod-desc">Veja diferentes possibilidades de onde morar e o que fazer para quem deseja viver com mais equilíbrio e qualidade de vida.</p>
+    </div>
+    <div class="module reveal">
+      <div class="mod-num">05</div>
+      <h3 class="mod-title">Criando seu plano de transição</h3>
+      <p class="mod-desc">Comece a estruturar um plano real para sair do modo sobrevivência e construir a vida que você quer viver.</p>
+    </div>
+    <div class="module reveal">
+      <div class="mod-num">06</div>
+      <h3 class="mod-title">Lorem ipsum dolor sit amet</h3>
+      <p class="mod-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     BONUS
+══════════════════════════════════════════ -->
+<section class="s-bonus section-pad">
+  <div class="inner">
+    <div class="bonus-badge">Bônus incluído</div>
+    <h2 class="reveal">Calculadora da Transição de Vida</h2>
+
+    <p class="reveal">Uma das maiores dúvidas de quem pensa em mudar de vida é simples:</p>
+
+    <div class="bonus-q reveal">
+      <p>Quanto dinheiro eu realmente precisaria?</p>
+    </div>
+
+    <p class="reveal">Com a Calculadora da Transição de Vida você poderá entender:</p>
+
+    <ul class="bonus-list">
+      <li class="reveal">Quanto custa sua vida atual</li>
+      <li class="reveal">Quais são suas despesas reais</li>
+      <li class="reveal">Quanto seria necessário para sustentar sua família com mais tranquilidade</li>
+      <li class="reveal">Qual seria um cenário seguro para iniciar uma transição</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     ABOUT
+══════════════════════════════════════════ -->
+<section class="s-about section-pad">
+  <div class="about-grid">
+    <div class="about-photo">
+      <div class="about-photo-placeholder">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="10"/>
+          <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16"/>
+        </svg>
+        <span>Foto do expert</span>
+      </div>
+    </div>
+
+    <div class="about-content">
+      <div class="label" style="margin-bottom: 14px;">Quem sou eu para te ensinar isso?</div>
+      <h2 class="reveal">João Paulo</h2>
+      <div class="about-role">Empreendedor · Marido · Pai de quatro filhos</div>
+
+      <p class="reveal">Durante muito tempo minha vida seguiu o mesmo caminho que a de muitas pessoas hoje. Muito trabalho, muitas responsabilidades e a sensação constante de que eu precisava dar conta de tudo.</p>
+
+      <p class="reveal">Por fora parecia que tudo estava funcionando. Eu trabalhava, sustentava minha família e mantinha a vida andando. Mas por dentro existia uma ansiedade constante e uma frustração difícil de explicar. Era como se eu estivesse sempre ocupado, sempre correndo, mas sem sentir que estava realmente vivendo.</p>
+
+      <p class="reveal">A rotina era intensa, o tempo passava rápido e, em muitos momentos, eu me perguntava se a vida seria apenas isso: trabalhar, pagar contas e esperar um dia ter tempo para viver.</p>
+
+      <p class="reveal">Foi em um momento da minha vida que eu decidi parar e repensar tudo. Não foi algo impulsivo. Foi um processo de olhar com mais clareza para minhas prioridades, entender minha realidade financeira e começar uma transição mais consciente.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PRICING
+══════════════════════════════════════════ -->
+<section class="s-pricing section-pad" id="acesso">
+  <div class="label" style="justify-content: center; margin-bottom: 52px;">Acesso ao Plano de Transição de Vida</div>
+
+  <div class="pricing-card reveal">
+    <h2 class="pricing-title">Plano de Transição de Vida<br>+ Calculadora da Transição</h2>
+
+    <div class="price-was">De R$ 197,00</div>
+    <div class="price-tag-label">Por apenas</div>
+    <div class="price-now"><sup>R$</sup>97</div>
+
+    <p class="price-desc">Comece hoje a entender o que precisa ser organizado para sair do modo sobrevivência e construir uma vida com mais presença, tempo e propósito.</p>
+
+    <a href="#" class="btn-cta">Acessar agora por R$ 97</a>
+
+    <p class="price-note">Acesso imediato após o pagamento</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════ -->
+<section class="s-faq section-pad">
+  <div class="inner">
+    <div class="label" style="justify-content: center;">Dúvidas frequentes</div>
+    <h2 class="reveal">Perguntas frequentes</h2>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        Para quem é o Plano de Transição de Vida?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-body">
+        <p>Para qualquer pessoa que sente que está vivendo no piloto automático — trabalhando muito, mas sem tempo de qualidade para a família, para os relacionamentos ou para si mesmo. Especialmente para quem quer dar os primeiros passos em direção a uma vida mais intencional, mas não sabe por onde começar.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        Preciso ter uma situação financeira estável para fazer isso?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-body">
+        <p>Não. O Plano foi criado exatamente para ajudar você a entender sua realidade financeira atual e planejar uma mudança de forma consciente e segura. O objetivo é clareza, não exigência de uma situação financeira ideal.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        O conteúdo é complexo? Vou conseguir aplicar?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-body">
+        <p>A proposta do Plano é ser prático e objetivo. Sem teorias complexas ou conteúdos difíceis de aplicar. As aulas são diretas e as ferramentas foram criadas para você usar na sua realidade, com linguagem simples e exemplos concretos.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        Como funciona o acesso após a compra?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-body">
+        <p>O acesso é imediato após a confirmação do pagamento. Você receberá um e-mail com todas as instruções para acessar as aulas e a Calculadora da Transição de Vida.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        Esse plano vai resolver meu problema de vez?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-body">
+        <p>O Plano de Transição de Vida é um ponto de partida poderoso. Ele vai te dar clareza, ferramentas e um mapa concreto para começar. A transição é um processo — e esse plano foi criado para você começar esse processo com mais segurança e menos confusão.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     BANNER CTA
+══════════════════════════════════════════ -->
+<section class="banner-cta">
+  <div class="label" style="justify-content: center;">Comece agora</div>
+  <h2 class="reveal">Você não precisa esperar a aposentadoria<br>para começar a viver.</h2>
+  <a href="#acesso" class="btn-cta reveal">Quero sair do modo sobrevivência</a>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <img
+    src="Saia do Modo de Sobrevivência/Logo Saia do Modo de Sobrevivência Sem Fundo.png"
+    alt="Saia do Modo de Sobrevivência"
+  >
+  <p>© 2025 Saia do Modo de Sobrevivência. Todos os direitos reservados.</p>
+</footer>
+
+
+<script>
+  /* ── Scroll reveal ──────────────────────── */
+  const reveals = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  /* ── Pain items staggered reveal ───────── */
+  const painItems = document.querySelectorAll('.pain-item');
+
+  const painObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const idx = Array.from(entry.target.parentNode.children).indexOf(entry.target);
+      setTimeout(() => {
+        entry.target.classList.add('in');
+      }, idx * 90);
+      painObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.08 });
+
+  painItems.forEach(el => painObserver.observe(el));
+
+  /* ── FAQ accordion ──────────────────────── */
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  /* ── Smooth scroll for anchor links ────── */
+  document.querySelectorAll('a[href="#acesso"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('acesso').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
